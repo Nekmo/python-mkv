@@ -58,12 +58,10 @@ class MkvMerge(Mkv):
         self.arguments.extend(source.get_args())
         self.arguments.extend(['('] + list(source.files) + [')'])
 
-    def add_subtitle(self, file, name, language_code, is_default=None, is_forced=False, order=None):
-        if order is None:
-            order = self.types_orders['subtitles']
-            self.types_orders['subtitles'] += 1
-        self.set_arg_value('subtitle-tracks', [order, '(', file, ')'])
-        self.add_language(language_code, name, is_default, is_forced, order)
+    def add_subtitle(self, file, name, language_code, is_default=None, is_forced=False):
+        # El order siempre es 0 porque el origen es un archivo, con solo 1 track
+        self.add_language(language_code, name, is_default, is_forced, 0)
+        self.set_arg_value('subtitle-tracks', [0, '(', file, ')'])
 
     def add_attachments(self, files):
         if not isinstance(files, LISTS_TYPES):
@@ -77,6 +75,12 @@ class MkvMerge(Mkv):
         for file in os.listdir(dir):
             self.add_attachments(os.path.join(dir, file))
 
+    def set_title(self, name):
+        self.set_arg_value('title', name)
+
+    def set_language(self, language_code):
+        self.set_arg_value('chapter-language', language_code)
+
     def create(self):
         print([self.command] + self.arguments)
         check_call([self.command] + map(str, self.arguments))
@@ -88,10 +92,12 @@ if __name__ == '__main__':
     source.copy_audios(1)
     source.copy_videos(0)
     mkvmerge = MkvMerge('/tmp/salida.mkv')
-    # mkvmerge.add_language("jpn", "[HDTV] 10bit H.264 - 720p")
-    # mkvmerge.add_language("jpn", "AAC 2.0")
+    mkvmerge.add_language("jpn", "[HDTV] 10bit H.264 - 720p")
+    mkvmerge.add_language("jpn", "AAC 2.0")
     mkvmerge.add_source(source)
     mkvmerge.add_subtitle('/home/nekmo/Src/Hoshizora/premux/dxd/02/[Canchosos] Highschool DxD PorN - 02 [Final].ass',
                           "Subtítulos [Latino] - Hagure, Hoshizora & Seigi", 'spa')
     mkvmerge.add_attachments_from_dir('/home/nekmo/Src/Hoshizora/premux/dxd/02/fonts/')
+    mkvmerge.set_title("[Hoshizora] Highschool DxD BorN - 01: ¡Verano en el Inframundo!")
+    mkvmerge.set_language('spa')
     mkvmerge.create()
