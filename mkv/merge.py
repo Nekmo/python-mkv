@@ -63,6 +63,11 @@ class MkvMerge(Mkv):
         self.add_language(language_code, name, is_default, is_forced, 0)
         self.set_arg_value('subtitle-tracks', [0, '(', file, ')'])
 
+    def add_chapters(self, file, language_code):
+        # El order siempre es 0 porque el origen es un archivo, con solo 1 track
+        self.set_arg_value("chapter-language", language_code)
+        self.set_arg_value('chapters', file)
+
     def add_attachments(self, files):
         if not isinstance(files, LISTS_TYPES):
             files = [files]
@@ -82,15 +87,14 @@ class MkvMerge(Mkv):
         self.set_arg_value('chapter-language', language_code)
 
     def create(self):
-        print([self.command] + self.arguments)
         check_call([self.command] + map(str, self.arguments))
 
 
 if __name__ == '__main__':
 
     source = MkvSource('/home/nekmo/Src/Hoshizora/premux/dxd/02/[Canchosos]_Highschool_DxD_BorN_-_02_[premux][AEAF7ED6].mkv')
-    source.copy_audios(1)
-    source.copy_videos(0)
+    source.copy_audios('all')
+    source.copy_videos('all')
     mkvmerge = MkvMerge('/tmp/salida.mkv')
     mkvmerge.add_language("jpn", "[HDTV] 10bit H.264 - 720p")
     mkvmerge.add_language("jpn", "AAC 2.0")

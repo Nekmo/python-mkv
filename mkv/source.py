@@ -31,7 +31,9 @@ class MkvSource(Mkv):
 
     def _set_type_elements(self, type, elements):
         var_name = '_copy_%s' % type
-        if not elements or elements[0] is False:
+        if elements  and elements[0] == 'all':
+            elements = True
+        elif not elements or elements[0] is False:
             elements = [getattr(self, '_no_%s' % type)]
         else:
             elements = self._normatize_input_options(elements)
@@ -55,5 +57,7 @@ class MkvSource(Mkv):
 
     def get_args(self):
         for type in self.types:
-            self.arguments.extend(getattr(self, '_copy_%s' % type))
+            value = getattr(self, '_copy_%s' % type)
+            if value is True: continue
+            self.arguments.extend(value)
         return self.arguments
