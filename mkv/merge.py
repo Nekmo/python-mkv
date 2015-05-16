@@ -91,7 +91,8 @@ class MkvMerge(Mkv):
         self.set_arg_value('chapter-language', language_code)
 
     def create(self):
-        check_call([self.command] + map(str, self.arguments))
+        print(self.arguments)
+        check_call([self.command] + map(unicode, self.arguments))
 
 
 if __name__ == '__main__':
