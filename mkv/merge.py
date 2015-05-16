@@ -8,8 +8,8 @@ from mkv.source import MkvSource
 
 mimetypes.init()
 
-mimetypes.add_type('application/x-truetype-font', 'ttf')
-mimetypes.add_type('application/vnd.ms-opentype', 'otf')
+mimetypes.add_type('application/x-truetype-font', '.ttf')
+mimetypes.add_type('application/vnd.ms-opentype', '.otf')
 
 
 __author__ = 'nekmo'
