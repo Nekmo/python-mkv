@@ -8,6 +8,9 @@ from mkv.source import MkvSource
 
 mimetypes.init()
 
+mimetypes.add_type('application/x-truetype-font', 'ttf')
+mimetypes.add_type('application/vnd.ms-opentype', 'otf')
+
 
 __author__ = 'nekmo'
 
@@ -84,6 +87,7 @@ class MkvMerge(Mkv):
         self.set_arg_value('title', name)
 
     def set_language(self, language_code):
+        # DEPRECATED
         self.set_arg_value('chapter-language', language_code)
 
     def create(self):
