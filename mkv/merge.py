@@ -61,10 +61,10 @@ class MkvMerge(Mkv):
         self.arguments.extend(source.get_args())
         self.arguments.extend(['('] + list(source.files) + [')'])
 
-    def add_subtitle(self, file, name, language_code, is_default=None, is_forced=False):
+    def add_subtitle(self, file, name, language_code, is_default=None, is_forced=False, order=0):
         # El order siempre es 0 porque el origen es un archivo, con solo 1 track
-        self.add_language(language_code, name, is_default, is_forced, 0)
-        self.set_arg_value('subtitle-tracks', [0, '(', file, ')'])
+        self.add_language(language_code, name, is_default, is_forced, order)
+        self.set_arg_value('subtitle-tracks', [order, '(', file, ')'])
 
     def add_chapters(self, file, language_code):
         # El order siempre es 0 porque el origen es un archivo, con solo 1 track
