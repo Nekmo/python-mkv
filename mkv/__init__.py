@@ -18,7 +18,7 @@ class Mkv(object):
         if order is None:
             order = self.types_orders[type]
             self.types_orders[type] += 1
-        if is_default is None and order is 0:
+        if (is_default is None and order is 0) or is_default is True:
             is_default = True
         else:
             is_default = False

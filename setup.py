@@ -4,7 +4,7 @@ from setuptools import setup
 
 setup(
     name='mkv',
-    version='0.1.3',
+    version='0.1.5',
 
     description='Merge and split mkv files usign mkvextract and mkvmerge.',
 
